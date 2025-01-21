@@ -1,0 +1,14 @@
+C:\Users\hp\source\repos\musicPlayer\BLL\bin\Debug\BLL.dll
+C:\Users\hp\source\repos\musicPlayer\BLL\bin\Debug\BLL.pdb
+C:\Users\hp\source\repos\musicPlayer\BLL\obj\Debug\BLL.csproj.AssemblyReference.cache
+C:\Users\hp\source\repos\musicPlayer\BLL\obj\Debug\BLL.csproj.CoreCompileInputs.cache
+C:\Users\hp\source\repos\musicPlayer\BLL\obj\Debug\BLL.dll
+C:\Users\hp\source\repos\musicPlayer\BLL\obj\Debug\BLL.pdb
+C:\Users\hp\source\repos\musicPlayer\BLL\bin\Debug\AutoMapper.dll
+C:\Users\hp\source\repos\musicPlayer\BLL\bin\Debug\DAL.dll
+C:\Users\hp\source\repos\musicPlayer\BLL\bin\Debug\DAL.pdb
+C:\Users\hp\source\repos\musicPlayer\BLL\bin\Debug\DAL.dll.config
+C:\Users\hp\source\repos\musicPlayer\BLL\bin\Debug\AutoMapper.xml
+C:\Users\hp\source\repos\musicPlayer\BLL\obj\Debug\BLL.csproj.Up2Date
+C:\Users\hp\source\repos\musicPlayer\BLL\bin\Debug\EntityFramework.dll
+C:\Users\hp\source\repos\musicPlayer\BLL\bin\Debug\EntityFramework.xml

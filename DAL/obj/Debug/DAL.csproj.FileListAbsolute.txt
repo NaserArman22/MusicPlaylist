@@ -1,0 +1,14 @@
+C:\Users\hp\source\repos\musicPlayer\DAL\bin\Debug\DAL.dll.config
+C:\Users\hp\source\repos\musicPlayer\DAL\bin\Debug\DAL.dll
+C:\Users\hp\source\repos\musicPlayer\DAL\bin\Debug\DAL.pdb
+C:\Users\hp\source\repos\musicPlayer\DAL\bin\Debug\EntityFramework.dll
+C:\Users\hp\source\repos\musicPlayer\DAL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\hp\source\repos\musicPlayer\DAL\bin\Debug\EntityFramework.xml
+C:\Users\hp\source\repos\musicPlayer\DAL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\hp\source\repos\musicPlayer\DAL\obj\Debug\DAL.csproj.AssemblyReference.cache
+C:\Users\hp\source\repos\musicPlayer\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.cache
+C:\Users\hp\source\repos\musicPlayer\DAL\obj\Debug\DAL.csproj.Up2Date
+C:\Users\hp\source\repos\musicPlayer\DAL\obj\Debug\DAL.dll
+C:\Users\hp\source\repos\musicPlayer\DAL\obj\Debug\DAL.pdb
+C:\Users\hp\source\repos\musicPlayer\DAL\obj\Debug\DAL.Migrations.InitDB.resources
+C:\Users\hp\source\repos\musicPlayer\DAL\obj\Debug\DAL.csproj.GenerateResource.cache
