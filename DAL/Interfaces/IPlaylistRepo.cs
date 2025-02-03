@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    public interface IPlaylistRepo : IRepo<playlist>
+    public interface IPlaylistRepo 
     {
         
         void AddSongToPlaylist(int playlistId, song song);

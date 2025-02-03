@@ -49,6 +49,7 @@
     <Compile Include="DTOs\SongDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PlaylistService.cs" />
+    <Compile Include="Utilities\EmailHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj">

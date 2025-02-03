@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
+using BLL.Utilities;
+using DAL;
 using DAL.EF.Table;
 using DAL.Repos;
 using System;
@@ -23,50 +25,50 @@ namespace BLL.Services
             return new Mapper(config);
         }
 
-        // Get all playlists
+        
         public static List<PlaylistDTO> Get()
         {
-            var repo = new PlaylistRepo();
+            var repo = dataAccessFactory.GetRepo();
             var data = repo.GetAll();
             var ret = GetMapper().Map<List<PlaylistDTO>>(data);
             return ret;
         }
 
-        // Get a playlist by ID
+        
         public static PlaylistDTO GetById(int id)
         {
-            var repo = new PlaylistRepo();
+            var repo = dataAccessFactory.GetRepo();
             var data = repo.GetById(id);
             return data != null ? GetMapper().Map<PlaylistDTO>(data) : null;
         }
 
-        // Create a new playlist
+        
         public static void Create(PlaylistDTO playlistDTO)
         {
             var playlist = GetMapper().Map<playlist>(playlistDTO);
-            var repo = new PlaylistRepo();
+            var repo = dataAccessFactory.GetRepo();
             repo.Create(playlist);
         }
 
-        // Delete a playlist by ID
+        
         public static void Delete(int id)
         {
-            var repo = new PlaylistRepo();
+            var repo = dataAccessFactory.GetRepo();
             repo.Delete(id);
         }
 
-        // Add a song to a playlist
+       
         public static void AddSongToPlaylist(int playlistId, SongDTO songDTO)
         {
             var song = GetMapper().Map<song>(songDTO);
-            var repo = new PlaylistRepo();
+            var repo = dataAccessFactory.GetRepo();
             repo.AddSongToPlaylist(playlistId, song);
         }
 
-        // Search for playlists by name
+        
         public static IEnumerable<PlaylistDTO> SearchByName(string name)
         {
-            var repo = new PlaylistRepo();
+            var repo = dataAccessFactory.GetRepo();
             var data = repo.GetAll()
                 .Where(p => p.Name != null &&
                             p.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0)
@@ -74,10 +76,10 @@ namespace BLL.Services
             return data;
         }
 
-        // Search songs by title within a playlist
+        
         public static IEnumerable<SongDTO> SearchSongsInPlaylist(int playlistId, string title)
         {
-            var repo = new PlaylistRepo();
+            var repo = dataAccessFactory.GetRepo();
             var playlist = repo.GetById(playlistId);
 
             if (playlist == null) return Enumerable.Empty<SongDTO>();
@@ -91,23 +93,135 @@ namespace BLL.Services
         }
         public static SongDTO GetSongDetailsByName(string songName)
         {
-            var repo = new PlaylistRepo();
+            var repo =  dataAccessFactory.GetRepo();
 
-            // Use LINQ to search for the song by its name (case-insensitive)
+
             var song = repo.GetAll()
-                .SelectMany(p => p.Songs) // Flatten all songs from playlists
+                .SelectMany(p => p.Songs) 
                 .Where(s => s.Title != null &&
                             s.Title.Equals(songName, StringComparison.OrdinalIgnoreCase)) // Match by name
-                .Select(s => new SongDTO // Dynamically map only the required fields
+                .Select(s => new SongDTO 
                 {
                     SongId = s.SongId,
                     Title = s.Title,
                     Artist = s.Artist,
                     Album = s.Album
                 })
-                .FirstOrDefault(); // Get the first matching song or null
+                .FirstOrDefault(); 
 
             return song;
+        }
+
+        public static void SharePlaylistViaEmail(int playlistId, string email)
+        {
+            var playlistRepo = dataAccessFactory.GetRepo();
+
+            
+            var playlist = playlistRepo.GetById(playlistId);
+            if (playlist == null)
+                throw new Exception("Playlist not found");
+
+            
+            var message = new StringBuilder();
+            message.AppendLine($"Playlist Name: {playlist.Name}");
+            message.AppendLine("Songs:");
+            foreach (var song in playlist.Songs)
+            {
+                message.AppendLine($"- {song.Title} by {song.Artist} ({song.Album})");
+            }
+
+            
+            EmailHelper.ShareViaEmail(email, "A Playlist Shared With You", message.ToString());
+        }
+
+        public static string GetSongLyrics(int songId)
+        {
+            var repo = dataAccessFactory.GetRepo();
+
+            
+            var song = repo.GetAll()
+                .SelectMany(p => p.Songs) 
+                .FirstOrDefault(s => s.SongId == songId); 
+
+            if (song == null)
+                throw new Exception("Song not found");
+
+            return song.Lyrics; 
+        }
+        public static string GetSongLyricsByTitle(string title)
+        {
+            var repo = dataAccessFactory.GetRepo();
+
+
+            var song = repo.GetAll()
+                .SelectMany(p => p.Songs)
+                .FirstOrDefault(s => s.Title != null &&
+                                     s.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
+
+            if (song == null)
+                throw new Exception("Song not found");
+
+            return song.Lyrics;
+        }
+        public static List<SongDTO> ShufflePlaylist(int playlistId)
+        {
+            var repo = dataAccessFactory.GetRepo();
+            var playlist = repo.GetById(playlistId);
+
+            if (playlist == null)
+                throw new Exception("Playlist not found");
+
+            
+            var shuffledSongs = playlist.Songs.OrderBy(s => Guid.NewGuid()).ToList();
+
+            
+            return shuffledSongs.Select(s => new SongDTO
+            {
+                SongId = s.SongId,
+                Title = s.Title,
+                Artist = s.Artist,
+                Album = s.Album
+            }).ToList();
+        }
+
+        
+        public static List<SongDTO> RepeatPlaylist(int playlistId)
+        {
+            var repo =  dataAccessFactory.GetRepo();
+            var playlist = repo.GetById(playlistId);
+
+            if (playlist == null)
+                throw new Exception("Playlist not found");
+
+            
+            return playlist.Songs.Select(s => new SongDTO
+            {
+                SongId = s.SongId,
+                Title = s.Title,
+                Artist = s.Artist,
+                Album = s.Album
+            }).ToList();
+        }
+
+        
+        public static SongDTO RepeatSong(int songId)
+        {
+            var repo = dataAccessFactory.GetRepo();
+            var song = repo.GetAll()
+                .SelectMany(p => p.Songs)
+                .FirstOrDefault(s => s.SongId == songId);
+
+            if (song == null)
+                throw new Exception("Song not found");
+
+            
+            return new SongDTO
+            {
+                SongId = song.SongId,
+                Title = song.Title,
+                Artist = song.Artist,
+                Album = song.Album
+            };
         }
     }
 }

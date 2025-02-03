@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.EF.Table;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,8 @@ namespace DAL.Interfaces
         void view(pL playlist, int id);
         void Delete(int id);
         void Save();
+
+
+        void AddSongToPlaylist(int playlistId, song song);
     }
 }

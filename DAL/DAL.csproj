@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="dataAccessFactory.cs" />
     <Compile Include="EF\MusicDBContext.cs" />
     <Compile Include="EF\Table\playlist.cs" />
     <Compile Include="EF\Table\song.cs" />

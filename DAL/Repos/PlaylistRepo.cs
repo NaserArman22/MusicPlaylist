@@ -9,7 +9,7 @@ using DAL.Interfaces;
 
 namespace DAL.Repos
 {
-    public class PlaylistRepo : IRepo<playlist>
+    internal class PlaylistRepo : IRepo<playlist>, IPlaylistRepo
     {
         private  MusicDBContext db;
 

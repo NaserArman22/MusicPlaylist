@@ -19,7 +19,7 @@ namespace musicPlayer.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, playlists);
         }
 
-        // Get a playlist by ID
+        
         [HttpGet]
         [Route("api/playlist/{id}")]
         public HttpResponseMessage GetById(int id)
@@ -31,7 +31,7 @@ namespace musicPlayer.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, playlist);
         }
 
-        // Create a new playlist
+        
         [HttpPost]
         [Route("api/playlist/create")]
         public HttpResponseMessage Create([FromBody] PlaylistDTO playlistDTO)
@@ -43,7 +43,7 @@ namespace musicPlayer.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, "Playlist created successfully");
         }
 
-        // Delete a playlist by ID
+        
         [HttpDelete]
         [Route("api/playlist/delete/{id}")]
         public HttpResponseMessage Delete(int id)
@@ -56,7 +56,7 @@ namespace musicPlayer.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, "Playlist deleted successfully");
         }
 
-        // Add a song to a playlist
+        
         [HttpPost]
         [Route("api/playlist/{playlistId}/addsong")]
         public HttpResponseMessage AddSongToPlaylist(int playlistId, [FromBody] SongDTO songDTO)
@@ -72,7 +72,7 @@ namespace musicPlayer.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, "Song added to playlist successfully");
         }
 
-        // Search playlists by name
+        
         [HttpGet]
         [Route("api/playlist/searchbyname/{name}")]
         public HttpResponseMessage SearchByName(string name)
@@ -84,7 +84,7 @@ namespace musicPlayer.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, playlists);
         }
 
-        // Search songs in a specific playlist by title
+        
         [HttpGet]
         [Route("api/playlist/{playlistId}/searchsongs/{title}")]
         public HttpResponseMessage SearchSongsInPlaylist(int playlistId, string title)
@@ -105,6 +105,96 @@ namespace musicPlayer.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK, song);
         }
+
+        [HttpPost]
+        [Route("share/email/{playlistId}")]
+        public HttpResponseMessage SharePlaylistViaEmail(int playlistId, [FromBody] string email)
+        {
+            try
+            {
+                PlaylistService.SharePlaylistViaEmail(playlistId, email);
+                return Request.CreateResponse(HttpStatusCode.OK, "Playlist shared via email successfully");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("song/{songId}/lyrics")]
+        public HttpResponseMessage GetSongLyrics(int songId)
+        {
+            try
+            {
+                var lyrics = PlaylistService.GetSongLyrics(songId);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Lyrics = lyrics });
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("song/lyrics/title/{title}")]
+        public HttpResponseMessage GetSongLyricsByTitle(string title)
+        {
+            try
+            {
+                var lyrics = PlaylistService.GetSongLyricsByTitle(title);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Lyrics = lyrics });
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("shuffle/{playlistId}")]
+        public HttpResponseMessage ShufflePlaylist(int playlistId)
+        {
+            try
+            {
+                var shuffledSongs = PlaylistService.ShufflePlaylist(playlistId);
+                return Request.CreateResponse(HttpStatusCode.OK, shuffledSongs);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("repeat/playlist/{playlistId}")]
+        public HttpResponseMessage RepeatPlaylist(int playlistId)
+        {
+            try
+            {
+                var repeatedPlaylist = PlaylistService.RepeatPlaylist(playlistId);
+                return Request.CreateResponse(HttpStatusCode.OK, repeatedPlaylist);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("repeat/song/{songId}")]
+        public HttpResponseMessage RepeatSong(int songId)
+        {
+            try
+            {
+                var repeatedSong = PlaylistService.RepeatSong(songId);
+                return Request.CreateResponse(HttpStatusCode.OK, repeatedSong);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+
+
 
     }
 }
